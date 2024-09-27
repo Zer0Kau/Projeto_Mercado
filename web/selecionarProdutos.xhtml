@@ -1,0 +1,185 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>Comprar</title>
+            </f:facet>
+        </h:head>
+
+        <h:body>
+
+            <p:layout fullPage="true">
+
+                <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true">
+                    <h:form>
+                        <p:commandButton value="Logout" action="#{usuarioControle.doLogout()}"/>
+                    </h:form>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="south" size="100" closable="true" collapsible="true">
+                    Footer
+                </p:layoutUnit>
+
+                <p:layoutUnit position="west" size="175" header="Left" collapsible="true">
+                    <h:form>
+                        <p:menu>
+                            <p:submenu label="Cadastros ">
+                                <p:menuitem value="Produtos" url="http://localhost:8084/ExemploPrimefaces/faces/produtos.xhtml" />
+                                <p:menuitem value="Minhas Vendas" url="http://localhost:8084/ExemploPrimefaces/faces/vendaUsuario.xhtml" />
+
+                            </p:submenu >
+                            <p:submenu label="Selecionar ">
+                                <p:menuitem value="Produtos" url="http://localhost:8084/ExemploPrimefaces/faces/selecionarProdutos.xhtml" />
+
+                            </p:submenu>
+
+                        </p:menu>
+                    </h:form>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center">
+                    <h:form id="form">
+
+                        <p:dataTable value="#{itensVendaControle.listaProduto}"  
+                                     selection="#{itensVendaControle.listaItensVenda}"
+                                     rowsPerPageTemplate="5,10,15" paginator="true"
+                                     var="aux" 
+                                     emptyMessage="Nenhum produto encontrado!"
+                                     rowKey="#{aux.idProduto}">
+
+
+                            <f:facet name="header"> 
+                                <p:outputPanel>  
+                                    <h:outputText value="Selecionar Produtos para Compra" />  
+                                </p:outputPanel>  
+                            </f:facet>  
+
+                            <p:column selectionMode="multiple" style="width:16px;text-align:center">
+
+                            </p:column> 
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Nome" />
+                                </f:facet>
+                                <h:outputText value="#{aux.nome}" />
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Marca" />
+                                </f:facet>
+                                <h:outputText value="#{aux.marca.nomeMarca}" />
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Tipo" />
+                                </f:facet>
+                                <h:outputText value="#{aux.tipo.nomeTipo}" />
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Preço" />
+                                </f:facet>
+                                <h:outputText value="R$ #{aux.preco}" />
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Estoque" />
+                                </f:facet>
+                                <h:outputText value="#{aux.estoqueAtual}" />
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Descrição" />
+                                </f:facet>
+                                <h:outputText value="#{aux.descricao}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton value="Escolher" update="display" oncomplete="PF('dlg').show()" icon="ui-icon-check" action="#{vendaControle.preparaIncluir()}" />
+
+                        <p:dialog header="Values"  showEffect="clip" widgetVar="dlg" resizable="false">
+                            <p:outputPanel id="display">
+                                <p:dataTable value="#{itensVendaControle.listaItensVenda}"  
+                                             var="aux1" 
+                                             emptyMessage="Nenhum produto encontrado!">
+
+
+                                    <f:facet name="header"> 
+                                        <p:outputPanel>  
+                                            <h:outputText value="Carrinho" />  
+                                        </p:outputPanel>  
+                                    </f:facet>    
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Código" />
+                                        </f:facet>
+                                        <h:outputText value="#{aux1.idProduto}" />
+                                    </p:column>
+
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Nome" />
+                                        </f:facet>
+                                        <h:outputText value="#{aux1.nome}" />
+                                    </p:column>
+
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Preço" />
+                                        </f:facet>
+                                        <h:outputText value="R$ #{aux1.preco}" />
+                                    </p:column>
+
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Descrição" />
+                                        </f:facet>
+                                        <h:outputText value="#{aux1.descricao}" />
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Quantidade" />
+                                        </f:facet>
+                                        <p:spinner id="basic" value="#{aux1.quantidade}" />
+                                    </p:column>
+                                </p:dataTable>
+
+                                <p:commandButton value="Comprar"  styleClass="center" oncomplete="PF('vnd').show()">
+                                    <f:setPropertyActionListener target="#{vendaControle.listaProduto}" value="#{itensVendaControle.listaItensVenda}"/>
+
+                                </p:commandButton>
+
+                                <p:dialog id="confirmaCompra" 
+                                          header="Confirma a Compra:"  
+                                          widgetVar="vnd">
+                                    <p:commandButton value="Sim"  
+                                                     update=":form"  
+                                                     actionListener="#{vendaControle.salvar()}"
+                                                     oncomplete="PF('vnd').hide()">
+                                    </p:commandButton>  
+                                    <p:commandButton value="Não"
+                                                     update=":form"
+                                                     oncomplete="PF('vnd').hide()"/>
+                                </p:dialog>
+
+                            </p:outputPanel>
+                        </p:dialog>
+                    </h:form>
+
+                </p:layoutUnit>
+            </p:layout>
+        </h:body>
+    </f:view>
+</html>
+

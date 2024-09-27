@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:f="http://java.sun.com/jsf/core" 
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:p="http://primefaces.org/ui"> 
+    <h:head>
+        <title>Login</title>
+    </h:head>
+    <h:body>
+        <f:view>
+            <div align="center" 
+                 id="login-dialog">
+                <h1>Login</h1>
+                <h:form id="frm">
+                    <p:messages autoUpdate="true" />
+                    <h:panelGrid columns="1" styleClass="grid-login">
+                        <p:separator/>
+                        <p:inputText id="us" 
+                                     size="25"
+                                     placeholder="Nome"
+                                     value="#{usuarioControle.usuario.login}" />
+                        <p:password id="senha" 
+                                    size="25"
+                                    placeholder="Senha"
+                                    value="#{usuarioControle.usuario.senha}" />
+                        <p:separator/>
+
+                    </h:panelGrid>
+                    <left>
+                        <p:commandButton value="Acessar"
+                                         styleClass="btn btn-warning"
+                                         action="#{usuarioControle.login()}" />
+                    </left>
+                </h:form>
+                <br/>
+                
+                <h:form id="form">
+                    <right>
+                        <p:commandButton value="Cadastrar"  
+                                         action="#{usuarioControle.preparaIncluir}" 
+                                         oncomplete="PF('dialog').show()" update="@form"/>
+
+                        <p:growl id="msg" showDetail="true" life="2500"/>
+                    </right>
+
+                    <p:dialog header="Cadastro de Produto"  widgetVar="dialog" showEffect="explode" hideEffect="explode" resizable="false">
+                        <p:outputPanel id="painel" style="text-align:center;">
+                            <p:growl id="msgs" showDetail="true" />
+                            <h:panelGrid  columns="2">
+
+                                <p:outputLabel for="nome" value="Nome:" />
+                                <p:inputText id="nome" value="#{usuarioControle.usuario.nome}" maxlength="50" required="true" /> 
+
+                                <p:outputLabel for="login" value="Login:" />
+                                <p:inputText id="login" value="#{usuarioControle.usuario.login}" maxlength="50" required="true"/>
+
+                                <p:outputLabel for="senha" value="senha:" />
+                                <p:password id="senha" value="#{usuarioControle.usuario.senha}" feedback="true" required="true"/>
+
+                                <p:outputLabel for="event" value="Data Nascimento:" />
+                                <p:calendar id="event" value="#{usuarioControle.usuario.dataNascimento}">
+                                    <p:ajax event="dateSelect" listener="#{usuarioControle.usuario.onDateSelect}" update="msgs" />
+                                </p:calendar>
+
+                                <p:outputLabel for="cpf" value="CPF:" />
+                                <p:inputMask id="cpf" value="#{usuarioControle.usuario.cpf}" maxlength="11" mask="999.999.999-99" required="true"/>
+
+                                <p:outputLabel for="cidade" value="Cidade:" />
+                                <p:inputText id="cidade" value="#{usuarioControle.usuario.cidade}" maxlength="50" required="true"/>
+
+                                <p:outputLabel for="cep" value="Cep:" />
+                                <p:inputMask id="cep" value="#{usuarioControle.usuario.cep}" maxlength="50" mask="99.999-999" required="true"/>
+                               
+                                <p:outputLabel for="rua" value="Rua:" />
+                                <p:inputText id="rua" value="#{usuarioControle.usuario.rua}" maxlength="50" required="true"/>
+
+                                <p:outputLabel for="bairro" value="Bairro:" />
+                                <p:inputText id="bairro" value="#{usuarioControle.usuario.bairro}" maxlength="50" required="true"/>
+
+                                <p:outputLabel for="numeroCasa" value="Numero da Casa:" />
+                                <p:inputText id="numeroCasa" value="#{usuarioControle.usuario.numeroCasa}" maxlength="50" required="true"/>
+
+
+
+                            </h:panelGrid>
+                            <p:dialog modal="true" resizable="false" header="Values" widgetVar="dlg" showEffect="fold">
+                                <p:panelGrid id="display" columns="2" columnClasses="label,value">
+
+                                    <h:outputText value="Event:" />
+                                    <h:outputText value="#{usuarioControle.usuario.dataNascimento}">
+                                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                                    </h:outputText>
+
+
+                                </p:panelGrid>
+                            </p:dialog>
+                            <p:commandButton    
+                                value="Salvar"  
+                                icon="ui-icon-disk" 
+                                action="#{usuarioControle.salvar}" 
+                                update=":form"
+                                oncomplete="PF('dialog').hide()" />
+
+                            <p:commandButton value="Cancelar"
+                                             icon="ui-icon-close" 
+                                             oncomplete="PF('dialog').hide()"/>
+
+                        </p:outputPanel>
+                    </p:dialog>
+                </h:form>
+            </div>
+        </f:view>
+
+    </h:body>
+</html>

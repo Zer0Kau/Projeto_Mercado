@@ -1,0 +1,156 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>PrimeFaces</title>
+            </f:facet>
+        </h:head>
+
+        <h:body>
+
+            <p:layout fullPage="true">
+
+                <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true">
+                    <h:form>
+                        <p:commandButton value="Logout" action="#{usuarioControle.doLogout()}"/>
+                    </h:form>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="south" size="100" closable="true" collapsible="true">
+                    Footer
+                </p:layoutUnit>
+                <p:layoutUnit position="west" size="240" header="Left" collapsible="true">
+                    <h:form>
+                        <p:menu>
+                            <p:submenu label="Telas ">
+                                <p:menuitem value="Produtos" url="http://localhost:8084/ExemploPrimefaces/faces/produtos.xhtml" />
+                                <p:menuitem value="Minhas Vendas" url="http://localhost:8084/ExemploPrimefaces/faces/vendaUsuario.xhtml" />
+
+
+                            </p:submenu>
+                            <p:submenu label="Selecionar ">
+                                <p:menuitem value="Produtos" url="http://localhost:8084/ExemploPrimefaces/faces/selecionarProdutos.xhtml" />
+
+                            </p:submenu>
+
+                        </p:menu>
+                    </h:form>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center">
+                    <h:form id="form">
+
+                        <p:dataTable value="#{produtoControle.listaProduto}"  var="aux"  emptyMessage="Nenhum produto encontrado!">
+
+
+                            <f:facet name="header">  
+                                <p:outputPanel>  
+                                    <h:outputText value="Controle de Protudo" />  
+                                </p:outputPanel>  
+                            </f:facet>  
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Detalhes" />
+                                </f:facet>
+
+                                <p:commandLink update=":form:vendaDetail" oncomplete="PF('vendaDialog').show()">
+                                    <f:setPropertyActionListener value="#{aux}" target="#{produtoControle.produto}" />
+                                    <f:selectItems value="#{checkboxView.cities}" />
+                                    <h:outputText value="Detalhes" /> 
+                                </p:commandLink>
+
+                            </p:column>     
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Código" />
+                                </f:facet>
+                                <h:outputText value="#{aux.idProduto}" />
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Nome" />
+                                </f:facet>
+                                <h:outputText value="#{aux.nome}" />
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Marca" />
+                                </f:facet>
+                                <h:outputText value="#{aux.marca.nomeMarca}" />
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Tipo" />
+                                </f:facet>
+                                <h:outputText value="#{aux.tipo.nomeTipo}" />
+                            </p:column>
+
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Preço" />
+                                </f:facet>
+                                <h:outputText value="R$ #{aux.preco}" />
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Estoque" />
+                                </f:facet>
+                                <h:outputText value="#{aux.estoqueAtual}" />
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Descrição" />
+                                </f:facet>
+                                <h:outputText value="#{aux.descricao}" />
+                            </p:column>
+
+                        </p:dataTable>
+                        <p:dialog header="Venda"
+                                  widgetVar="vendaDialog" 
+                                  showEffect="blind" 
+                                  hideEffect="explode" 
+                                  resizable="false">
+                            <p:outputPanel id="vendaDetail" style="text-align:center;">
+                                <p:panelGrid columns="2" columnClasses="label,value"> 
+                                    <f:facet name="header">
+                                        <p:button icon="ui-icon-carat-1-n"/> 
+                                    </f:facet>
+
+
+                                    <h:outputText value="Nome:" />
+                                    <h:outputText value="#{produtoControle.produto.nome}" />
+                                    <h:outputText value="Marca:" />
+                                    <h:outputText value="#{produtoControle.produto.marca.nomeMarca}" />
+                                    <h:outputText value="Tipo:" />
+                                    <h:outputText value="#{produtoControle.produto.tipo.nomeTipo}" />
+                                    <h:outputText value="Preco:" />
+                                    <h:outputText value="R$ #{produtoControle.produto.preco}" />
+                                    <h:outputText value="Estoque:" />
+                                    <h:outputText value="#{produtoControle.produto.estoqueAtual}" />
+                                    <h:outputText value="Descrição:" />
+                                    <h:outputText value="#{produtoControle.produto.descricao}" />
+
+                                </p:panelGrid>
+                            </p:outputPanel>
+                        </p:dialog>
+
+                    </h:form>
+
+                </p:layoutUnit>
+            </p:layout>
+        </h:body>
+    </f:view>
+</html>
+

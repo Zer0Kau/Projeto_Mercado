@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>PrimeFaces</title>
+            </f:facet>
+        </h:head>
+
+        <h:body>
+
+            <p:layout fullPage="true">
+                <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true">
+                    <h:form>
+                        <p:commandButton value="Logout" action="#{usuarioControle.doLogout()}"/>
+                    </h:form>
+                </p:layoutUnit>
+                <p:layoutUnit position="west" size="175" header="Left" collapsible="true">
+                    <h:form>
+                        <p:menu>
+                            <p:submenu label="Inicial ">
+                                <p:menuitem value="Inicial" url="http://localhost:8084/ExemploPrimefaces/faces/inicial.xhtml" />
+                            </p:submenu>
+                            <p:submenu label="Cadastros ">
+                                <p:menuitem value="Produtos" url="http://localhost:8084/ExemploPrimefaces/faces/cadastroProduto.xhtml" />
+                                <p:menuitem value="Marca" url="http://localhost:8084/ExemploPrimefaces/faces/cadastroMarca.xhtml" />
+                                <p:menuitem value="Usuario" url="http://localhost:8084/ExemploPrimefaces/faces/cadastroUsuario.xhtml" />
+                                <p:menuitem value="Tipos" url="http://localhost:8084/ExemploPrimefaces/faces/cadastroTipos.xhtml" />
+                                <p:menuitem value="Fornecedor" url="http://localhost:8084/ExemploPrimefaces/faces/cadastroFornecedor.xhtml" />
+                            </p:submenu>
+                            <p:submenu label="Alterar">
+                                <p:menuitem value="Status das Vendas" url="http://localhost:8084/ExemploPrimefaces/faces/venda.xhtml" />
+                                <p:menuitem value="Estoque" url="http://localhost:8084/ExemploPrimefaces/faces/compra.xhtml" />
+                            </p:submenu>
+                        </p:menu>
+                    </h:form>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center" size="175">
+
+                    <h:head>
+                        <title>Relatório de Data Específica</title>
+                    </h:head>
+                    <h:head>
+                        <title>Relatório de Data Específica</title>
+                    </h:head>
+                    <h:body>
+                        <h:form id="relatorio">
+                            Relatório de Venda
+
+                            <h:panelGrid columns="2">
+                                <p:outputLabel for="data01" value="De: " />
+                                <p:calendar id="data01"
+                                            value="#{vendaControle.dataInicial}" 
+                                            placeholder="data inicial"
+                                            pattern="dd-MM-yyyy" 
+                                            mask="true"/>
+                                <p:outputLabel for="data02" value="Até: " />
+                                <p:calendar id="data02"
+                                            value="#{vendaControle.dataFinal}" 
+                                            placeholder="data final"
+                                            pattern="dd-MM-yyyy" 
+                                            mask="true"/>
+                            </h:panelGrid>
+                            <p:commandLink
+                                value="Gerar relatório"  
+                                title="Relatório de Vendas"
+                                styleClass="btn btn-default"
+                                update="relatorio"
+                                ajax="false"
+                                action="#{vendaControle.dataEs()}">
+                            </p:commandLink> 
+                        </h:form>
+                    </h:body>
+                    <br/>
+                    <p:separator></p:separator>
+                    <h:body>
+                        Relatório de Compras
+                        <h:form id="relatorio2">
+
+                            <h:panelGrid columns="2">
+                                <p:outputLabel for="data01" value="De: " />
+                                <p:calendar id="data01"
+                                            value="#{vendaControle.dataInicial}" 
+                                            placeholder="data inicial"
+                                            pattern="dd-MM-yyyy" 
+                                            mask="true"/>
+                                <p:outputLabel for="data02" value="Até: " />
+                                <p:calendar id="data02"
+                                            value="#{vendaControle.dataFinal}" 
+                                            placeholder="data final"
+                                            pattern="dd-MM-yyyy" 
+                                            mask="true"/>
+                            </h:panelGrid>
+                            <p:commandLink
+                                value="Gerar relatório"  
+                                title="Relatório de Compras"
+                                update="relatorio2"
+                                styleClass="btn btn-default"
+                                ajax="false"
+                                action="#{vendaControle.dataEs1()}">
+                            </p:commandLink> 
+                        </h:form>
+                    </h:body>
+                    <br/>
+                    <p:separator></p:separator>
+                    <h:body>
+                        Relatório de itens da Venda
+                        <h:form id="relatorio3">
+
+                            <h:panelGrid columns="2">
+                                <p:outputLabel for="idVenda" value="N°:" />
+                                <h:inputText id="idVenda" value="#{vendaControle.idVenda}"/>
+                            </h:panelGrid>
+                            <p:commandLink
+                                value="Gerar relatório"  
+                                title="Relatório de itens da Venda"
+                                styleClass="btn btn-default"
+                                update="relatorio3"
+                                ajax="false"
+                                action="#{vendaControle.vendaEs()}">
+                            </p:commandLink> 
+                        </h:form>
+                    </h:body>
+                    <br/>
+                    <p:separator></p:separator>
+                    <h:body>
+                        Relatório de itens da Compra
+                        <h:form id="relatorio4">
+
+                            <h:panelGrid columns="2">
+                                <p:outputLabel for="idCompra" value="N°:" />
+                                <h:inputText id="idCompra" value="#{vendaControle.idCompra}"/>
+                            </h:panelGrid>
+                            <p:commandLink
+                                value="Gerar relatório"  
+                                title="Relatório de itens da Compra"
+                                styleClass="btn btn-default"
+                                update="relatorio4"
+                                ajax="false"
+                                action="#{vendaControle.compraEs()}">
+                            </p:commandLink> 
+                        </h:form>
+                    </h:body>
+                </p:layoutUnit>
+
+            </p:layout>
+
+        </h:body>
+
+    </f:view>
+</html>
+

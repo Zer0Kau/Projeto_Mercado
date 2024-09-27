@@ -1,0 +1,1 @@
+SELECT 	venda.*, usuario.nome as nomeUsuario, SUM(produto.preco) as valorTotal, venda.dataVenda as dataVenda FROM usuario, produto, venda WHERE venda.idUsuario = usuario.idUsuario ORDER BY venda.idVenda;

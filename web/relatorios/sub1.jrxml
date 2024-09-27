@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="sub1" columnCount="2" pageWidth="555" pageHeight="24" columnWidth="277" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="1fdc0eca-d629-449c-b02e-0b3f3e90950c">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="idVenda" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$F{idvenda}]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+venda.datavenda,
+itensvenda.idvenda,
+produto.descricao,
+produto.nome,
+itensvenda.quantidade,
+sum(produto.preco) as ValorUnitario,
+ sum(produto.preco*itensvenda.quantidade) as ValorTotal
+FROM
+ itensvenda
+INNER JOIN
+ venda
+ON
+venda.idvenda = itensvenda.idvenda
+INNER JOIN
+produto
+ON
+itensvenda.idProduto = produto.idproduto
+INNER JOIN
+ usuario
+ON
+usuario.idUsuario = venda.idUsuario
+where itensvenda.idVenda =$P{idVenda}
+ ORDER BY
+itensvenda.idProduto]]>
+	</queryString>
+	<field name="datavenda" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="idvenda" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="descricao" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nome" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="quantidade" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ValorUnitario" class="java.lang.Double"/>
+	<field name="ValorTotal" class="java.lang.Double"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="24" splitType="Stretch">
+			<textField pattern="R$0.00">
+				<reportElement x="375" y="0" width="180" height="24" forecolor="#000000" backcolor="#000000" uuid="e9b248a7-fae4-4000-a65d-4d5e6260b5d4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="18"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ValorTotal}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="15" y="0" width="123" height="24" forecolor="#000000" backcolor="#000000" uuid="b64533e9-5134-4c32-961a-781ebdb17b69"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="18"/>
+				</textElement>
+				<text><![CDATA[Valor Total:]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

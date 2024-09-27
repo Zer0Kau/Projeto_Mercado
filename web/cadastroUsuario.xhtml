@@ -1,0 +1,214 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>PrimeFaces</title>
+            </f:facet>
+        </h:head>
+
+        <h:body>
+
+            <p:layout fullPage="true">
+
+                <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true">
+                    <h:form>
+                        <p:commandButton value="Logout" action="#{usuarioControle.doLogout()}"/>
+                    </h:form>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="south" size="100" closable="true" collapsible="true">
+                    Footer
+                </p:layoutUnit>
+
+                <p:layoutUnit position="west" size="175" header="Left" collapsible="true">
+                    <h:form>
+                        <p:menu>
+                            <p:submenu label="Inicial ">
+                                <p:menuitem value="Inicial" url="http://localhost:8084/ExemploPrimefaces/faces/inicial.xhtml" />
+                            </p:submenu>
+                            <p:submenu label="Cadastros ">
+                                <p:menuitem value="Produtos" url="http://localhost:8084/ExemploPrimefaces/faces/cadastroProduto.xhtml" />
+                                <p:menuitem value="Marca" url="http://localhost:8084/ExemploPrimefaces/faces/cadastroMarca.xhtml" />
+                                <p:menuitem value="Usuario" url="http://localhost:8084/ExemploPrimefaces/faces/cadastroUsuario.xhtml" />
+                                <p:menuitem value="Tipos" url="http://localhost:8084/ExemploPrimefaces/faces/cadastroTipos.xhtml" />
+                                <p:menuitem value="Fornecedor" url="http://localhost:8084/ExemploPrimefaces/faces/cadastroFornecedor.xhtml" />
+                            </p:submenu>
+                            <p:submenu label="Alterar">
+                                <p:menuitem value="Status das Vendas" url="http://localhost:8084/ExemploPrimefaces/faces/venda.xhtml" />
+                                <p:menuitem value="Estoque" url="http://localhost:8084/ExemploPrimefaces/faces/compra.xhtml" />
+                            </p:submenu>
+                        </p:menu>
+                    </h:form>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center">
+                    <h:form id="form">
+
+                        <p:dataTable value="#{usuarioControle.listaUsuario}"  var="aux" rowsPerPageTemplate="5,10,15" paginator="true" emptyMessage="Nenhum usuario encontrado!">
+
+                            <f:facet name="header">  
+                                <p:outputPanel>  
+                                    <h:outputText value="Controle de Usuario" />  
+                                </p:outputPanel>  
+                            </f:facet>  
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Código" />
+                                </f:facet>
+                                <h:outputText value="#{aux.idUsuario}" />
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Nome" />
+                                </f:facet>
+                                <h:outputText value="#{aux.nome}" />
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Login" />
+                                </f:facet>
+                                <h:outputText value="#{aux.login}" />
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Data" />
+                                </f:facet>
+                                <h:outputText value="#{aux.dataNascimento}" />
+                            </p:column>
+
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Cidade" />
+                                </f:facet>
+                                <h:outputText value="#{aux.cidade}" />
+                            </p:column>
+
+
+                            <p:column style="width:100px;text-align: center">
+                                <f:facet name="header">
+                                    <h:outputText value="Ações" />
+                                </f:facet>
+                                <p:commandButton value="Alterar"
+                                                 icon="ui-icon-pencil" 
+                                                 oncomplete="PF('dialog').show()"
+                                                 update=":form:painel"
+                                                 action="#{usuarioControle.preparaAlterar}">
+                                    <f:setPropertyActionListener value="#{aux}" target="#{usuarioControle.usuario}" />
+                                </p:commandButton>
+
+                                <p:commandButton icon="ui-icon-cancel" 
+                                                 oncomplete="PF('excluir').show()">
+                                    <f:setPropertyActionListener value="#{aux}" target="#{usuarioControle.usuario}" />
+                                </p:commandButton>
+
+                            </p:column>
+
+                        </p:dataTable>
+
+                        <p:commandButton value="Cadastrar" 
+                                         action="#{usuarioControle.preparaIncluir}" 
+                                         icon="ui-icon-document"
+                                         oncomplete="PF('dialog').show()" update="@form"/>
+
+                        <p:growl id="msg" showDetail="true" life="2500"/>
+
+                        <!--PAINEL PARA EXCLUIR-->
+                        <p:confirmDialog id="confirmaExclusao" 
+                                         message="Deseja realmente excluir o registro?"  
+                                         header="Confirma a Exclusão?" 
+                                         severity="alert" 
+                                         widgetVar="excluir">
+                            <p:commandButton value="Sim" 
+                                             oncomplete="PF('excluir').hide()" 
+                                             update=":form"  
+                                             actionListener="#{usuarioControle.excluir}"/>  
+                            <p:commandButton value="Não" 
+                                             oncomplete="PF('excluir').hide()" 
+                                             type="button" />   
+                        </p:confirmDialog>  
+
+                        <!--PAINEL PARA ALTERAR / CADASTRAR-->
+
+                        <p:dialog header="Cadastro de Produto"  widgetVar="dialog" showEffect="explode" hideEffect="explode" resizable="false">
+                            <p:outputPanel id="painel" style="text-align:center;">
+                                <p:growl id="msgs" showDetail="true" />
+                                <h:panelGrid  columns="2">
+
+                                    <p:outputLabel for="nome" value="Nome:" />
+                                    <p:inputText id="nome" value="#{usuarioControle.usuario.nome}" maxlength="50" /> 
+
+                                    <p:outputLabel for="login" value="Login:" />
+                                    <p:inputText id="login" value="#{usuarioControle.usuario.login}" maxlength="50" />
+
+                                    <p:outputLabel for="senha" value="senha:" />
+                                    <p:password id="senha" value="#{usuarioControle.usuario.senha}" feedback="true" />
+
+                                    <p:outputLabel for="event" value="Data Nascimento:" />
+                                    <p:calendar id="event" value="#{usuarioControle.usuario.dataNascimento}">
+                                        <p:ajax event="dateSelect" listener="#{usuarioControle.usuario.onDateSelect}" update="msgs" />
+                                    </p:calendar>
+
+                                    <p:outputLabel for="cpf" value="CPF:" />
+                                    <p:inputText id="cpf" value="#{usuarioControle.usuario.cpf}" maxlength="11" />
+
+                                    <p:outputLabel for="cidade" value="Cidade:" />
+                                    <p:inputText id="cidade" value="#{usuarioControle.usuario.cidade}" maxlength="50" />
+
+                                    <p:outputLabel for="cep" value="Cep:" />
+                                    <p:inputText id="cep" value="#{usuarioControle.usuario.cep}" maxlength="50" /> 
+
+                                    <p:outputLabel for="rua" value="Rua:" />
+                                    <p:inputText id="rua" value="#{usuarioControle.usuario.rua}" maxlength="50" />
+
+                                    <p:outputLabel for="bairro" value="Bairro:" />
+                                    <p:inputText id="bairro" value="#{usuarioControle.usuario.bairro}" maxlength="50" />
+
+                                    <p:outputLabel for="numeroCasa" value="Numero da Casa:" />
+                                    <p:inputText id="numeroCasa" value="#{usuarioControle.usuario.numeroCasa}" maxlength="50" />
+
+
+
+                                </h:panelGrid>
+                                <p:dialog modal="true" resizable="false" header="Values" widgetVar="dlg" showEffect="fold">
+                                    <p:panelGrid id="display" columns="2" columnClasses="label,value">
+
+                                        <h:outputText value="Event:" />
+                                        <h:outputText value="#{usuarioControle.usuario.dataNascimento}">
+                                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                                        </h:outputText>
+
+
+                                    </p:panelGrid>
+                                </p:dialog>
+                                <p:commandButton    
+                                    value="Salvar"  
+                                    icon="ui-icon-disk" 
+                                    action="#{usuarioControle.salvar}" 
+                                    update=":form"
+                                    oncomplete="PF('dialog').hide()" />
+
+                                <p:commandButton value="Cancelar"
+                                                 icon="ui-icon-close" 
+                                                 oncomplete="PF('dialog').hide()"/>
+
+                            </p:outputPanel>
+                        </p:dialog>
+                    </h:form> 
+                </p:layoutUnit>
+            </p:layout>
+        </h:body>
+    </f:view>
+</html>
+
